@@ -37,5 +37,13 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_equal [@model.id, @model.name, @model.age], [@retrieved.id, @retrieved.name, @retrieved.age]
   end
   
-      
+  should "be deletable" do
+    @model.save
+    @model.destroy
+    assert @model.destroyed?
+    assert_raise RestClient::ResourceNotFound do
+      TestModel.find(@model.id)
+    end
+  end
+  
 end

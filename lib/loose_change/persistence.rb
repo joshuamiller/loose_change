@@ -36,7 +36,13 @@ module LooseChange
       raise "Cannot save without database set." unless @database
       new_record? ? post_record : put_record
     end
-    
+
+    def destroy
+      raise "Cannot destroy without database set." unless @database
+      result = JSON.parse(RestClient.delete("#{ database.uri }/#{ CGI.escape(id) }?rev=#{ @_rev }", default_headers))['ok']
+      @destroyed = result
+    end
+        
     private
     
     def post_record
