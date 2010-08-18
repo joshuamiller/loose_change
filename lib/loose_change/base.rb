@@ -16,11 +16,12 @@ module LooseChange
     include Errors
     extend Observer
     extend I18n
-    include Persistence
+    extend Persistence 
+    include PersistenceClassMethods
     
-    cattr_accessor :properties
+    cattr_accessor :database, :properties
     
-    def self.database(server, db)
+    def self.use_database(server, db)
       @@database = Database.new(Server.new(server), db)
     end
     
@@ -36,11 +37,14 @@ module LooseChange
       to_key ? to_key.join('-') : nil
     end
         
-    def initialize
+    def initialize(args = {})
       @errors = ActiveModel::Errors.new(self)
       @database = @@database
       @new_record = true
+      args.each {|property, value| self.send("#{property}=".to_sym, value)}
     end
     
   end
 end
+
+LooseChange::Base.include_root_in_json = false
