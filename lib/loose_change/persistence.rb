@@ -1,11 +1,14 @@
+require 'cgi'
+
 module LooseChange
   module Persistence
-
+        
     def find(id)
       result = JSON.parse(RestClient.get(self.database.uri + "/#{ id }"), default_headers)
       raise "Not Found" unless result['model_name'] == model_name
-      model = new(result.reject {|k, _| ['_rev', '_id', 'model_name'].include? k})
+      model = new(result.reject {|k, _| 'model_name' == k})
       model.id = result['_id']
+      model.new_record = false
       model
     end
         
@@ -20,7 +23,7 @@ module LooseChange
   
   module PersistenceClassMethods
 
-    attr_accessor :new_record, :destroyed, :database, :id
+    attr_accessor :new_record, :destroyed, :database, :id, :_rev, :_id
     
     def new_record?()   @new_record end
     def destroyed?()    @destroyed  end
@@ -38,12 +41,14 @@ module LooseChange
     
     def post_record
       result = JSON.parse(RestClient.post(database.uri, self.to_json(:methods => [:model_name]), default_headers))
-      @id = result['id']
+      @id = @_id = result['id']
+      @_rev = result['rev']
       @new_record = false
       result
     end
 
     def put_record
+      JSON.parse(RestClient.put(database.uri + "/#{ CGI.escape(id) }", self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
     end
     
     def default_headers

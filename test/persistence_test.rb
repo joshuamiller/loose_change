@@ -28,5 +28,14 @@ class PersistenceTest < ActiveSupport::TestCase
     @retrieved = TestModel.find(@model.id)
     assert_equal [@model.id, @model.name, @model.age], [@retrieved.id, @retrieved.name, @retrieved.age]
   end
+
+  should "be saveable after get" do
+    @model.save
+    @model.age = 18
+    assert @model.save
+    @retrieved = TestModel.find(@model.id)
+    assert_equal [@model.id, @model.name, @model.age], [@retrieved.id, @retrieved.name, @retrieved.age]
+  end
+  
       
 end
