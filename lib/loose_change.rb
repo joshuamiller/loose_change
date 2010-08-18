@@ -1,5 +1,8 @@
 require 'active_support'
+require 'active_support/core_ext'
 require 'active_model'
+require 'rest-client'
+require 'json'
 
 module LooseChange
   extend ActiveSupport::Autoload
@@ -13,4 +16,7 @@ module LooseChange
   autoload :I18n, File.dirname(__FILE__) + '/loose_change/i18n'
   autoload :Validations, File.dirname(__FILE__) + '/loose_change/validations'
   autoload :Base, File.dirname(__FILE__) + '/loose_change/base'
+  autoload :Persistence, File.dirname(__FILE__) + '/loose_change/persistence'
+  autoload :Database, File.dirname(__FILE__) + '/loose_change/database'
+  autoload :Server, File.dirname(__FILE__) + '/loose_change/server'
 end

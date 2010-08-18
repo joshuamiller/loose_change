@@ -1,6 +1,28 @@
 module LooseChange
   class Base
-
+    
+    include ActiveModel::AttributeMethods
+    include ActiveModel::Validations
+    include ActiveModel::Serialization
+    include ActiveModel::Serializers::JSON
+    
+    extend Attributes
+    include AttributeMethods
+    extend Callbacks
+    extend Dirty
+    extend Validations
+    extend Naming
+    include Errors
+    extend Observer
+    extend I18n
+    include Persistence
+    
+    cattr_accessor :properties
+    
+    def self.database(server, db)
+      @@database = Database.new(Server.new(server), db)
+    end
+    
     def to_key
       persisted? ? [id] : nil
     end
@@ -13,22 +35,11 @@ module LooseChange
       to_key ? to_key.join('-') : nil
     end
         
-    def persisted?
-      false
+    def initialize
+      @errors = ActiveModel::Errors.new(self)
+      @database = @@database
+      @new_record = true
     end
-        
-    include ActiveModel::AttributeMethods
-    include ActiveModel::Validations
-
-    include Errors
-
-    extend Attributes
-    extend Callbacks
-    extend Dirty
-    extend Validations
-    extend Naming
-    extend Observer
-    extend I18n
-
+    
   end
 end
