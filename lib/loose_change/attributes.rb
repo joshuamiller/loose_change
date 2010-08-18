@@ -7,7 +7,7 @@ module LooseChange
     end
   end
 
-  module AttributeMethods
+  module AttributeClassMethods
     def attributes
       self.class.properties.inject({}) {|acc, key| acc[key] = send(key); acc}
     end

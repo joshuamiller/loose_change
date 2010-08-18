@@ -7,11 +7,12 @@ module LooseChange
     include ActiveModel::Serializers::JSON
     
     extend Attributes
-    include AttributeMethods
+    include AttributeClassMethods
     extend Callbacks
     extend Dirty
     extend Validations
     extend Naming
+    include NamingClassMethods
     include Errors
     extend Observer
     extend I18n

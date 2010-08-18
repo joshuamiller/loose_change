@@ -16,7 +16,7 @@ module LooseChange
     end
 
     def post_record
-      result = JSON.parse(RestClient.post(database.uri, self.to_json, default_headers))
+      result = JSON.parse(RestClient.post(database.uri, self.to_json(:methods => [:model_name]), default_headers))
       @id = result['id']
       @new_record = false
       result
