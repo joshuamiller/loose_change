@@ -19,4 +19,6 @@ module LooseChange
   autoload :Persistence, File.dirname(__FILE__) + '/loose_change/persistence'
   autoload :Database, File.dirname(__FILE__) + '/loose_change/database'
   autoload :Server, File.dirname(__FILE__) + '/loose_change/server'
+  autoload :Views, File.dirname(__FILE__) + '/loose_change/views'
+  autoload :Helpers, File.dirname(__FILE__) + '/loose_change/helpers'
 end

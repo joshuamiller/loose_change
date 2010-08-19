@@ -18,12 +18,12 @@ module LooseChange
     extend I18n
     extend Persistence 
     include PersistenceClassMethods
+    extend Views
     
-    cattr_accessor :database, :properties
+    include Helpers
+    extend Helpers
     
-    def self.use_database(server, db)
-      @@database = Database.new(Server.new(server), db)
-    end
+    class_attribute :database, :properties
     
     def to_key
       persisted? ? [id] : nil
@@ -39,8 +39,8 @@ module LooseChange
         
     def initialize(args = {})
       @errors = ActiveModel::Errors.new(self)
-      @database = @@database
-      @new_record = true
+      @database = self.database
+      @new_record = true unless args['_id']
       args.each {|property, value| self.send("#{property}=".to_sym, value)}
     end
     

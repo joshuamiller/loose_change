@@ -12,6 +12,7 @@ end
 
 begin
   Bundler.require(:development)
+  require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "loose_change"
     gemspec.summary = "ActiveModel-compliant CouchDB ORM"

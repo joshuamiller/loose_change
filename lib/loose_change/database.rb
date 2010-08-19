@@ -1,5 +1,10 @@
+require 'cgi'
+
 module LooseChange
   class Database
+    include Helpers
+    extend Helpers
+    
     attr_reader :server, :host, :name, :root
 
     def initialize(server, name)
@@ -15,6 +20,24 @@ module LooseChange
       server.uri + @uri
     end
     
+    def self.delete(server, name)
+      begin
+        RestClient.delete("#{ server }/#{ name }")
+      rescue RestClient::ResourceNotFound
+      end
+    end
+        
+    def self.setup_design(database, model_name)
+      RestClient.put("#{ database.uri }/_design/#{ CGI.escape(model_name) }",
+                      { '_id' => "_design/#{ CGI.escape(model_name) }",
+                        'language' => 'javascript',
+                        'views' => { 'all' => { 'map' => "function(doc) {
+                                                            if (doc['model_name'] == '#{ model_name }') {
+                                                                emit(null, doc);
+                                                            }
+                                                          }" } } }.to_json, default_headers)
+    end
+    
     private
     
     def create_database_unless_exists
@@ -23,12 +46,5 @@ module LooseChange
       end
     end
     
-    def default_headers
-      {
-        :content_type => :json,
-        :accept       => :json
-      }
-    end
-
   end
 end

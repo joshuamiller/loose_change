@@ -2,13 +2,15 @@ require './test/test_helper'
 
 class PersistenceTest < ActiveSupport::TestCase
 
-  class TestModel < LooseChange::Base
-    use_database "http://127.0.0.1:5984", "test_db"
-    property :name
-    property :age
-  end
-    
   setup do
+    LooseChange::Database.delete "http://127.0.0.1:5984", "test_db"
+
+    class TestModel < LooseChange::Base
+      use_database "http://127.0.0.1:5984", "test_db"
+      property :name
+      property :age
+    end
+    
     @model = TestModel.new
     @model.name = "Test"
   end

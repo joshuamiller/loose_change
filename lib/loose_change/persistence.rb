@@ -2,7 +2,12 @@ require 'cgi'
 
 module LooseChange
   module Persistence
-        
+    
+    def use_database(server, db)
+      self.database = Database.new(Server.new(server), db)
+      Database.setup_design(self.database, self.model_name)
+    end
+    
     def find(id)
       begin
         result = JSON.parse(RestClient.get(self.database.uri + "/#{ id }"), default_headers)
@@ -10,12 +15,17 @@ module LooseChange
         raise RecordNotFound
       end
       raise RecordNotFound unless result['model_name'] == model_name
-      model = new(result.reject {|k, _| 'model_name' == k})
-      model.id = result['_id']
+      instantiate_from_hash(result)
+    end
+    
+    def instantiate_from_hash(hash)
+      model = new(hash.reject {|k, _| 'model_name' == k})
+      model.id = hash['_id']
       model.new_record = false
       model
     end
-        
+    
+    
     def default_headers
       {
         :content_type => :json,
