@@ -41,7 +41,7 @@ class PersistenceTest < ActiveSupport::TestCase
     @model.save
     @model.destroy
     assert @model.destroyed?
-    assert_raise RestClient::ResourceNotFound do
+    assert_raise LooseChange::RecordNotFound do
       TestModel.find(@model.id)
     end
   end

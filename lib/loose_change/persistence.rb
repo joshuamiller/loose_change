@@ -4,8 +4,12 @@ module LooseChange
   module Persistence
         
     def find(id)
-      result = JSON.parse(RestClient.get(self.database.uri + "/#{ id }"), default_headers)
-      raise "Not Found" unless result['model_name'] == model_name
+      begin
+        result = JSON.parse(RestClient.get(self.database.uri + "/#{ id }"), default_headers)
+      rescue RestClient::ResourceNotFound
+        raise RecordNotFound
+      end
+      raise RecordNotFound unless result['model_name'] == model_name
       model = new(result.reject {|k, _| 'model_name' == k})
       model.id = result['_id']
       model.new_record = false
@@ -64,5 +68,8 @@ module LooseChange
       }
     end
     
+  end
+
+  class RecordNotFound < Exception
   end
 end
