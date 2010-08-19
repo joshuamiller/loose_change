@@ -3,10 +3,10 @@ require './test/test_helper'
 class ViewTest < ActiveSupport::TestCase
 
   setup do
-    LooseChange::Database.delete("http://127.0.0.1:5984", "test_db")
+    LooseChange::Database.delete("test_db")
     
     class ViewModel < LooseChange::Base
-      use_database "http://127.0.0.1:5984", "test_db"
+      use_database "test_db"
       property :name
       
       view_by :name
@@ -18,8 +18,11 @@ class ViewTest < ActiveSupport::TestCase
     @model_two.save
   end
 
+  should "be findable as all" do
+    assert_equal 2, ViewModel.all.size
+  end
+  
   should "be findable based on a view" do
-    ViewModel.all
     result = ViewModel.by_name("Josh").first
     assert_equal "Josh", result.name
   end

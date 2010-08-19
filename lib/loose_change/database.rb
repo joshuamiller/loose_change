@@ -7,7 +7,7 @@ module LooseChange
     
     attr_reader :server, :host, :name, :root
 
-    def initialize(server, name)
+    def initialize(name, server)
       @name = name
       @server = server
       @host = server.uri
@@ -20,7 +20,7 @@ module LooseChange
       server.uri + @uri
     end
     
-    def self.delete(server, name)
+    def self.delete(name, server = "http://127.0.0.1:5984")
       begin
         RestClient.delete("#{ server }/#{ name }")
       rescue RestClient::ResourceNotFound

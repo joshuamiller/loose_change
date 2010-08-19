@@ -3,8 +3,8 @@ require 'cgi'
 module LooseChange
   module Persistence
     
-    def use_database(server, db)
-      self.database = Database.new(Server.new(server), db)
+    def use_database(db, server = "http://127.0.0.1:5984")
+      self.database = Database.new(db, Server.new(server))
       Database.setup_design(self.database, self.model_name)
     end
     
