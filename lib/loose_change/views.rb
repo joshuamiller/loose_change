@@ -12,8 +12,9 @@ module LooseChange
                    }
                    "
       add_to_views(view_name, view_code)
-      self.class.send(:define_method, view_name.to_sym) do |key|
-        JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(key.to_json)}", default_headers))['rows'].map do |row|
+      self.class.send(:define_method, view_name.to_sym) do |*keys|
+        keys = keys.first if keys.length == 1
+        JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(keys.to_json)}", default_headers))['rows'].map do |row|
           instantiate_from_hash(row['value'])
         end
       end
@@ -46,7 +47,7 @@ module LooseChange
       if keys.length == 1
         doc_key(keys.first)
       else
-        "[#{ keys.map {|k| doc_key(k) }}]"
+        "[#{keys.map {|k| doc_key(k) }.join(',')}]"
       end
     end
 
