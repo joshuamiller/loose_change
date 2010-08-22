@@ -25,6 +25,27 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_not_nil @model.id
   end
 
+  should "not be saveable unless valid" do
+    
+    class TestModel
+      validates_numericality_of :age
+    end
+
+    @invalid_model = TestModel.new(:age => "Too old")
+    assert !(@invalid_model.save)
+  end
+
+  should "not be saveable if no database set" do
+    class DBLessModel < LooseChange::Base
+      property :name
+    end
+
+    @invalid_model = DBLessModel.new(:name => "Problematic.")
+    assert_raises LooseChange::DatabaseNotSet do
+      @invalid_model.save
+    end
+  end
+      
   should "be gettable" do
     @model.save
     @retrieved = TestModel.find(@model.id)

@@ -5,7 +5,7 @@ module LooseChange
     include ActiveModel::Validations
     include ActiveModel::Serialization
     include ActiveModel::Serializers::JSON
-    
+
     extend Attributes
     include AttributeClassMethods
     extend Callbacks

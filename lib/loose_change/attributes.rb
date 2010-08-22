@@ -3,7 +3,7 @@ module LooseChange
     def property(name)
       attr_accessor name.to_sym
       self.properties = ((self.properties || []) << name.to_sym)
-      define_attribute_methods([name])
+      define_attribute_methods [name]
     end
   end
 

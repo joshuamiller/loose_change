@@ -25,14 +25,6 @@ module LooseChange
       model
     end
     
-    
-    def default_headers
-      {
-        :content_type => :json,
-        :accept       => :json
-      }
-    end
-    
   end
   
   module PersistenceClassMethods
@@ -47,12 +39,13 @@ module LooseChange
     end
     
     def save
-      raise "Cannot save without database set." unless @database
+      raise DatabaseNotSet.new("Cannot save without database set.") unless @database
+      return false unless valid?
       new_record? ? post_record : put_record
     end
 
     def destroy
-      raise "Cannot destroy without database set." unless @database
+      raise DatabaseNotSet.new("Cannot destroy without database set.") unless @database
       result = JSON.parse(RestClient.delete("#{ database.uri }/#{ CGI.escape(id) }?rev=#{ @_rev }", default_headers))['ok']
       @destroyed = result
     end
@@ -71,15 +64,11 @@ module LooseChange
       JSON.parse(RestClient.put(database.uri + "/#{ CGI.escape(id) }", self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
     end
     
-    def default_headers
-      {
-        :content_type => :json,
-        :accept       => :json
-      }
-    end
-    
   end
 
   class RecordNotFound < Exception
+  end
+
+  class DatabaseNotSet < Exception
   end
 end
