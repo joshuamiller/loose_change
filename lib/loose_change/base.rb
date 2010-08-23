@@ -8,6 +8,7 @@ module LooseChange
 
     extend Attributes
     include AttributeClassMethods
+    extend Attachments
     extend Callbacks
     extend Dirty
     extend Validations
@@ -23,7 +24,7 @@ module LooseChange
     include Helpers
     extend Helpers
     
-    class_attribute :database, :properties
+    class_attribute :database, :properties, :attachments
     
     def to_key
       persisted? ? [id] : nil

@@ -1,4 +1,5 @@
 module LooseChange
+  
   module Attributes
     def property(name)
       attr_accessor name.to_sym
@@ -9,7 +10,8 @@ module LooseChange
 
   module AttributeClassMethods
     def attributes
-      self.class.properties.inject({}) {|acc, key| acc[key] = send(key); acc}
+      (self.class.properties || []).inject({}) {|acc, key| acc[key] = send(key); acc}
     end
   end
+  
 end

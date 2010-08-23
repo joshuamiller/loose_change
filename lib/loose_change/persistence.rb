@@ -42,6 +42,8 @@ module LooseChange
       raise DatabaseNotSet.new("Cannot save without database set.") unless @database
       return false unless valid?
       new_record? ? post_record : put_record
+      put_attachments if self.class.attachments
+      true
     end
 
     def destroy
@@ -52,6 +54,10 @@ module LooseChange
         
     private
     
+    def uri
+      "#{database.uri}/#{ CGI.escape(id) }"
+    end
+    
     def post_record
       result = JSON.parse(RestClient.post(database.uri, self.to_json(:methods => [:model_name]), default_headers))
       @id = @_id = result['id']
@@ -61,7 +67,24 @@ module LooseChange
     end
 
     def put_record
-      JSON.parse(RestClient.put(database.uri + "/#{ CGI.escape(id) }", self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
+      JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
+    end
+
+    def put_attachments
+      self.class.attachments.each do |attachment_name|
+        if attachment = attachment_ivar(attachment_name)
+          result = JSON.parse(RestClient.put("#{ uri }/#{ attachment_name }?rev=#{ @_rev }", attachment, {:content_type => attachment_content_type(attachment_name), :accept => 'text/json'}))
+          @_rev = result['rev'] if result['ok']
+        end
+      end
+    end
+    
+    def attachment_ivar(name)
+      instance_variable_get("@#{ name }")
+    end
+
+    def attachment_content_type(name)
+      instance_variable_get("@_#{ name }_content_type")
     end
     
   end

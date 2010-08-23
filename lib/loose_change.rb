@@ -8,6 +8,7 @@ module LooseChange
   extend ActiveSupport::Autoload
 
   autoload :Attributes, File.dirname(__FILE__) + '/loose_change/attributes'
+  autoload :Attachments, File.dirname(__FILE__) + '/loose_change/attachments'
   autoload :Callbacks, File.dirname(__FILE__) + '/loose_change/callbacks'
   autoload :Dirty, File.dirname(__FILE__) + '/loose_change/dirty'
   autoload :Errors, File.dirname(__FILE__) + '/loose_change/errors'
