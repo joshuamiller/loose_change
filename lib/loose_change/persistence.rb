@@ -19,7 +19,7 @@ module LooseChange
     end
     
     def instantiate_from_hash(hash)
-      model = new(hash.reject {|k, _| 'model_name' == k})
+      model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
       model.id = hash['_id']
       model.new_record = false
       model

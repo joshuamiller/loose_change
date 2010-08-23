@@ -9,6 +9,7 @@ module LooseChange
     extend Attributes
     include AttributeClassMethods
     extend Attachments
+    include AttachmentClassMethods
     extend Callbacks
     extend Dirty
     extend Validations
