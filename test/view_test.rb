@@ -46,6 +46,14 @@ class ViewTest < ActiveSupport::TestCase
       assert_equal 2, ViewModel.view(:double_age, :include_docs => false, :key => 40).size
       assert_equal 20, ViewModel.view(:double_age, :include_docs => false, :key => 40).first
     end
+
+    should "add a view with a reduce" do
+      class ViewModel
+        add_view :total_age, "function(doc) { if ((doc['model_name'] == 'ViewTest::ViewModel') && (doc['age'] != null)) { emit(null, doc['age']); } }", "function(key, reduce) { return sum(reduce); }"
+      end
+      assert_equal 40, ViewModel.view(:total_age, :include_docs => false, :group => true).first
+    end
+    
   end
   
 end
