@@ -40,10 +40,11 @@ class ViewTest < ActiveSupport::TestCase
   context "custom views" do
     should "add a view" do
       class ViewModel
-        add_view :double_age, "function(doc) { if ((doc['model_name'] == 'ViewTest::ViewModel') && (doc['age'] != null)) { emit(doc['age'] * 2, doc); } }"
+        add_view :double_age, "function(doc) { if ((doc['model_name'] == 'ViewTest::ViewModel') && (doc['age'] != null)) { emit(doc['age'] * 2, doc['age']); } }"
       end
 
-      assert_equal 2, ViewModel.view(:double_age, :include_docs => true, :key => 40).size
+      assert_equal 2, ViewModel.view(:double_age, :include_docs => false, :key => 40).size
+      assert_equal 20, ViewModel.view(:double_age, :include_docs => false, :key => 40).first
     end
   end
   

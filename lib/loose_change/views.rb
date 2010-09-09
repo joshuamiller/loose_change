@@ -4,8 +4,9 @@ module LooseChange
   module Views
     
     def view(view_name, opts = {})
-      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(opts[:key].to_json)}", default_headers))['rows'].map do |row|
-        instantiate_from_hash(row['value'])
+      include_docs = opts.include?(:include_docs) ? opts[:include_docs] : true
+      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(opts[:key].to_json)}&include_docs=#{include_docs}", default_headers))['rows'].map do |row|
+        include_docs ? instantiate_from_hash(row['doc']) : row['value']
       end
     end
     
@@ -20,9 +21,7 @@ module LooseChange
       add_view(view_name, view_code)
       self.class.send(:define_method, view_name.to_sym) do |*keys|
         keys = keys.first if keys.length == 1
-        JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(keys.to_json)}", default_headers))['rows'].map do |row|
-          instantiate_from_hash(row['value'])
-        end
+        view(view_name, :key => keys, :include_docs => true)
       end
       
     end
