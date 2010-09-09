@@ -7,6 +7,7 @@ gem 'json'
 
 group :development do
   gem 'jeweler'
+  gem 'rake'
 end
 
 group :test do
