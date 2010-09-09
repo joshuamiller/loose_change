@@ -3,6 +3,12 @@ require 'cgi'
 module LooseChange
   module Views
     
+    def view(view_name, opts = {})
+      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(opts[:key].to_json)}", default_headers))['rows'].map do |row|
+        instantiate_from_hash(row['value'])
+      end
+    end
+    
     def view_by(*keys)
       view_name = "by_#{ keys.join('_and_') }"
       view_code = "function(doc) {
@@ -11,7 +17,7 @@ module LooseChange
                      }
                    }
                    "
-      add_to_views(view_name, view_code)
+      add_view(view_name, view_code)
       self.class.send(:define_method, view_name.to_sym) do |*keys|
         keys = keys.first if keys.length == 1
         JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(keys.to_json)}", default_headers))['rows'].map do |row|
@@ -29,7 +35,7 @@ module LooseChange
       JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ self.model_name }/_view/all", default_headers))['rows'].map { |row| instantiate_from_hash(row['value']) }
     end
     
-    def add_to_views(name, code)
+    def add_view(name, code)
       design_doc = JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }"))
       current_views = design_doc['views']
       JSON.parse(RestClient.put("#{ self.database.uri }/_design/#{ self.model_name }",

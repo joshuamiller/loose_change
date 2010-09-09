@@ -19,20 +19,32 @@ class ViewTest < ActiveSupport::TestCase
     @model_one.save
     @model_two.save
   end
-
-  should "be findable as all" do
-    assert_equal 2, ViewModel.all.size
-  end
   
-  should "be findable based on a view" do
-    result = ViewModel.by_name("Josh").first
-    assert_equal "Josh", result.name
+  context "builtin views" do
+    should "be findable as all" do
+      assert_equal 2, ViewModel.all.size
+    end
+    
+    should "be findable based on a view" do
+      result = ViewModel.by_name("Josh").first
+      assert_equal "Josh", result.name
+    end
+    
+    should "be findable with multiple keys" do
+      results = ViewModel.by_name_and_age "Josh", 20
+      assert_equal 1, results.length
+      assert_equal "Josh", results.first.name
+    end
   end
 
-  should "be findable with multiple keys" do
-    results = ViewModel.by_name_and_age "Josh", 20
-    assert_equal 1, results.length
-    assert_equal "Josh", results.first.name
+  context "custom views" do
+    should "add a view" do
+      class ViewModel
+        add_view :double_age, "function(doc) { if ((doc['model_name'] == 'ViewTest::ViewModel') && (doc['age'] != null)) { emit(doc['age'] * 2, doc); } }"
+      end
+
+      assert_equal 2, ViewModel.view(:double_age, :include_docs => true, :key => 40).size
+    end
   end
   
 end
