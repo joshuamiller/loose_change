@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'activesupport'
-gem 'activemodel'
+gem 'activesupport', '~> 3.0.0'
+gem 'activemodel', '~> 3.0.0'
 gem 'rest-client'
 gem 'json'
 
