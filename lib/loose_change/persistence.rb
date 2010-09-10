@@ -39,19 +39,23 @@ module LooseChange
     end
     
     def save
-      raise DatabaseNotSet.new("Cannot save without database set.") unless @database
-      return false unless valid?
-      new_record? ? post_record : put_record
-      put_attachments if self.class.attachments
-      true
+      _run_save_callbacks do
+        raise DatabaseNotSet.new("Cannot save without database set.") unless @database
+        return false unless valid?
+        new_record? ? post_record : put_record
+        put_attachments if self.class.attachments
+        true
+      end
     end
 
     def destroy
-      raise DatabaseNotSet.new("Cannot destroy without database set.") unless @database
-      result = JSON.parse(RestClient.delete("#{ database.uri }/#{ CGI.escape(id) }?rev=#{ @_rev }", default_headers))['ok']
-      @destroyed = result
+      _run_destroy_callbacks do
+        raise DatabaseNotSet.new("Cannot destroy without database set.") unless @database
+        result = JSON.parse(RestClient.delete("#{ database.uri }/#{ CGI.escape(id) }?rev=#{ @_rev }", default_headers))['ok']
+        @destroyed = result
+      end
     end
-        
+    
     private
     
     def uri

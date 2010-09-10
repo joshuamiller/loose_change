@@ -5,12 +5,20 @@ module LooseChange
     include ActiveModel::Validations
     include ActiveModel::Serialization
     include ActiveModel::Serializers::JSON
-
+    
+    # Can't escape the following when trying to
+    # use a Callbacks module:
+    # undefined method `extlib_inheritable_reader' for LooseChange::Callbacks:Module
+    #
+    # so we'll throw it in here
+    # include Callbacks
+    extend ActiveModel::Callbacks
+    define_model_callbacks :save, :destroy
+    
     extend Attributes
     include AttributeClassMethods
     extend Attachments
     include AttachmentClassMethods
-    extend Callbacks
     extend Dirty
     extend Validations
     extend Naming
