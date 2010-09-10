@@ -5,15 +5,21 @@
 
 Gem::Specification.new do |s|
   s.name = %q{loose_change}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Miller"]
-  s.date = %q{2010-09-08}
+  s.date = %q{2010-09-10}
   s.email = %q{josh@joshinharrisburg.com}
+  s.extra_rdoc_files = [
+    "LICENSE",
+     "README.md"
+  ]
   s.files = [
     ".gitignore",
      "Gemfile",
+     "LICENSE",
+     "README.md",
      "Rakefile",
      "VERSION",
      "lib/loose_change.rb",
@@ -35,6 +41,7 @@ Gem::Specification.new do |s|
      "loose_change.gemspec",
      "test/attachment_test.rb",
      "test/base_test.rb",
+     "test/callback_test.rb",
      "test/persistence_test.rb",
      "test/resources/couchdb.png",
      "test/test_helper.rb",
@@ -48,6 +55,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "test/attachment_test.rb",
      "test/base_test.rb",
+     "test/callback_test.rb",
      "test/persistence_test.rb",
      "test/test_helper.rb",
      "test/view_test.rb"
