@@ -36,7 +36,7 @@ module LooseChange
     end
 
     def to_param
-      to_key ? to_key.join('-') : nil
+      (to_key && persisted?) ? to_key.join('-') : nil
     end
         
     def initialize(args = {})
