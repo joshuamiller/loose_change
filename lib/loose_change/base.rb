@@ -53,6 +53,7 @@ module LooseChange
       @new_record = true unless args['_id']
       args.each {|property, value| self.send("#{property}=".to_sym, value)}
       apply_defaults
+      self
     end
     
   end

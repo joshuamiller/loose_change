@@ -18,6 +18,12 @@ module LooseChange
       instantiate_from_hash(result)
     end
     
+    def create(args = {})
+      new(args).save
+    end
+
+    alias_method :create!, :create
+        
     def instantiate_from_hash(hash)
       model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
       model.id = hash['_id']
@@ -46,6 +52,8 @@ module LooseChange
       end
     end
 
+    def save!() save; end
+    
     def destroy
       _run_destroy_callbacks do
         raise DatabaseNotSet.new("Cannot destroy without database set.") unless @database
@@ -62,9 +70,8 @@ module LooseChange
       return false unless valid?
       new_record? ? post_record : put_record
       put_attachments if self.class.attachments
-      true
+      self
     end
-    
     
     def uri
       "#{database.uri}/#{ CGI.escape(id) }"

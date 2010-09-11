@@ -26,6 +26,18 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_not_nil @model.id
   end
 
+  should "take save with a !" do
+    model = TestModel.new(:age => 2)
+    model.save!
+    assert model.persisted?
+  end
+
+  should "be createable" do
+    model = TestModel.create(:age => 2)
+    assert model.persisted?
+    assert_not_nil model.id
+  end
+  
   should "not be saveable unless valid" do
     
     class TestModel
