@@ -30,11 +30,11 @@ module LooseChange
     def self.setup_design(database, model_name)
       begin
         RestClient.get("#{ database.uri }/_design/#{ CGI.escape(model_name) }")
-      rescue RestClient::ResourceNotFound
+      rescue
         RestClient.put("#{ database.uri }/_design/#{ CGI.escape(model_name) }",
-                      { '_id' => "_design/#{ CGI.escape(model_name) }",
-                        'language' => 'javascript',
-                        'views' => { 'all' => { 'map' => "function(doc) {
+                       { '_id' => "_design/#{ CGI.escape(model_name) }",
+                         'language' => 'javascript',
+                         'views' => { 'all' => { 'map' => "function(doc) {
                                                             if (doc['model_name'] == '#{ model_name }') {
                                                                 emit(null, doc);
                                                             }

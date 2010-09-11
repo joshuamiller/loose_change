@@ -41,6 +41,7 @@ module LooseChange
     def save
       _run_save_callbacks do
         raise DatabaseNotSet.new("Cannot save without database set.") unless @database
+        apply_defaults
         return false unless valid?
         new_record? ? post_record : put_record
         put_attachments if self.class.attachments

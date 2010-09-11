@@ -33,7 +33,7 @@ module LooseChange
     include Helpers
     extend Helpers
     
-    class_attribute :database, :properties, :attachments
+    class_attribute :database, :properties, :defaults, :attachments
     
     def to_key
       persisted? ? [id] : nil
@@ -52,6 +52,7 @@ module LooseChange
       @database = self.database
       @new_record = true unless args['_id']
       args.each {|property, value| self.send("#{property}=".to_sym, value)}
+      apply_defaults
     end
     
   end

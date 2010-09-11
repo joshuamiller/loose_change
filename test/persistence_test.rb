@@ -7,7 +7,7 @@ class PersistenceTest < ActiveSupport::TestCase
 
     class TestModel < LooseChange::Base
       use_database "test_db"
-      property :name
+      property :name, :default => "Jose"
       property :age
     end
     
@@ -67,6 +67,11 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_raise LooseChange::RecordNotFound do
       TestModel.find(@model.id)
     end
+  end
+  
+  should "honor a default" do
+    new_model = TestModel.new(:age => 2)
+    assert_equal "Jose", new_model.name
   end
   
 end
