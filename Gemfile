@@ -12,4 +12,5 @@ end
 
 group :test do
   gem 'shoulda'
+  gem 'timecop'
 end

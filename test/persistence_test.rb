@@ -9,6 +9,7 @@ class PersistenceTest < ActiveSupport::TestCase
       use_database "test_db"
       property :name, :default => "Jose"
       property :age
+      timestamps!
     end
     
     @model = TestModel.new
@@ -72,6 +73,21 @@ class PersistenceTest < ActiveSupport::TestCase
   should "honor a default" do
     new_model = TestModel.new(:age => 2)
     assert_equal "Jose", new_model.name
+  end
+
+  should "accept timestamps" do
+    time = Time.now
+    Timecop.travel(time)
+    new_model = TestModel.new
+    new_model.save
+    assert_times_close time, new_model.created_at
+    assert_times_close time, new_model.updated_at
+    future = time + 10.minutes
+    Timecop.travel(future)
+    new_model.save
+    assert_times_close future, new_model.updated_at
+    assert_times_close time, new_model.created_at
+    Timecop.return
   end
   
 end

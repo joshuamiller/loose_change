@@ -39,13 +39,10 @@ module LooseChange
     end
     
     def save
-      _run_save_callbacks do
-        raise DatabaseNotSet.new("Cannot save without database set.") unless @database
-        apply_defaults
-        return false unless valid?
-        new_record? ? post_record : put_record
-        put_attachments if self.class.attachments
-        true
+      if new_record?
+        _run_create_callbacks { _run_save_callbacks { _save } }
+      else
+        _run_save_callbacks { _save }
       end
     end
 
@@ -58,6 +55,16 @@ module LooseChange
     end
     
     private
+
+    def _save
+      raise DatabaseNotSet.new("Cannot save without database set.") unless @database
+      apply_defaults
+      return false unless valid?
+      new_record? ? post_record : put_record
+      put_attachments if self.class.attachments
+      true
+    end
+    
     
     def uri
       "#{database.uri}/#{ CGI.escape(id) }"

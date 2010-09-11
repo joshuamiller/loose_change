@@ -13,7 +13,7 @@ module LooseChange
     # so we'll throw it in here
     # include Callbacks
     extend ActiveModel::Callbacks
-    define_model_callbacks :save, :destroy
+    define_model_callbacks :create, :save, :destroy
     
     extend Attributes
     include AttributeClassMethods
