@@ -13,6 +13,7 @@ Empire'](http://en.wikipedia.org/wiki/Holy_Roman_Empire#Analysis)
 ## Warnings
 
 * This is pretty alpha at this point.
+* Only tested on Ruby 1.9.2.  I'm not intentionally breaking 1.8.x, but neither do I guarantee anything.
 * The stuff about GeoCouch above was a goal I didn't get to yet.
 
 ## Help
