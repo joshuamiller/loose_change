@@ -52,7 +52,7 @@ module LooseChange
       end
     end
 
-    def save!() save; end
+    alias_method :save!, :save
     
     def destroy
       _run_destroy_callbacks do
