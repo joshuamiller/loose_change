@@ -47,6 +47,11 @@ module LooseChange
       (to_key && persisted?) ? to_key.join('-') : nil
     end
         
+    def ==(other_model)
+      id == other_model.id &&
+        _rev == other_model._rev
+    end
+          
     def initialize(args = {})
       @errors = ActiveModel::Errors.new(self)
       @database = self.database
