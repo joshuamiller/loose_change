@@ -5,14 +5,12 @@ module LooseChange
     include Helpers
     extend Helpers
     
-    attr_reader :server, :host, :name, :root
+    attr_reader :server, :name
 
     def initialize(name, server)
       @name = name
       @server = server
-      @host = server.uri
       @uri  = "/#{name.gsub('/','%2F')}"
-      @root = host + uri
       create_database_unless_exists
     end
     
