@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{loose_change}
-  s.version = "0.1.8"
+  s.version = "0.1.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Miller"]
@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
      "test/attachment_test.rb",
      "test/base_test.rb",
      "test/callback_test.rb",
+     "test/inheritance_test.rb",
      "test/persistence_test.rb",
      "test/resources/couchdb.png",
      "test/test_helper.rb",
@@ -56,6 +57,7 @@ Gem::Specification.new do |s|
     "test/attachment_test.rb",
      "test/base_test.rb",
      "test/callback_test.rb",
+     "test/inheritance_test.rb",
      "test/persistence_test.rb",
      "test/test_helper.rb",
      "test/view_test.rb"
