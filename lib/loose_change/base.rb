@@ -5,6 +5,7 @@ module LooseChange
     include ActiveModel::Validations
     include ActiveModel::Serialization
     include ActiveModel::Serializers::JSON
+    include ActiveModel::Dirty
     
     # Can't escape the following when trying to
     # use a Callbacks module:
@@ -49,7 +50,8 @@ module LooseChange
         
     def ==(other_model)
       id == other_model.id &&
-        _rev == other_model._rev
+        _rev == other_model._rev &&
+        !(changed? || other_model.changed?)
     end
           
     def initialize(args = {})
