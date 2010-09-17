@@ -15,6 +15,7 @@ class BaseTest < ActiveModel::TestCase
   should 'be appropriately equal' do
     @model.save
     assert_equal @model, CompliantModel.find(@model.id)
+    assert_equal 1, ([@model] & [CompliantModel.find(@model.id)]).size
   end
     
 end

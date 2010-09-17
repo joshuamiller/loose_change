@@ -53,7 +53,13 @@ module LooseChange
         _rev == other_model._rev &&
         !(changed? || other_model.changed?)
     end
-          
+    
+    alias_method :eql?, :== 
+    
+    def hash
+      id.try(:hex) || super
+    end
+    
     def initialize(args = {})
       @errors = ActiveModel::Errors.new(self)
       @database = self.database
