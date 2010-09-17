@@ -38,14 +38,30 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_not_nil model.id
   end
   
-  should "not be saveable unless valid" do
-    
-    class TestModel
+  context 'invalid models' do
+    class ValidationTestModel < LooseChange::Base
+      use_database "test_db"
+      property :name, :default => "Jose"
+      property :age
       validates_numericality_of :age
+      timestamps!
     end
 
-    @invalid_model = TestModel.new(:age => "Too old")
-    assert !(@invalid_model.save)
+    should "not be saveable" do
+      @invalid_model = ValidationTestModel.new(:age => "Too old")
+      assert !(@invalid_model.save)
+      assert_raises LooseChange::RecordInvalid do
+        @invalid_model.save!
+      end
+    end
+    
+    should "not be createable" do
+      assert !(ValidationTestModel.create(:age => "Too old").valid?)
+      assert ValidationTestModel.create(:age => "Too old").id.nil?
+      assert_raises LooseChange::RecordInvalid do
+        ValidationTestModel.create!(:age => "Too old")
+      end
+    end
   end
 
   should "not be saveable if no database set" do

@@ -19,11 +19,15 @@ module LooseChange
     end
     
     def create(args = {})
-      new(args).save
+      model = new(args)
+      model.save
+      model
     end
 
-    alias_method :create!, :create
-        
+    def create!(args = {})
+      new(args).save!
+    end
+    
     def instantiate_from_hash(hash)
       model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
       model.id = hash['_id']
@@ -52,7 +56,13 @@ module LooseChange
       end
     end
 
-    alias_method :save!, :save
+    def save!
+      if new_record?
+        _run_create_callbacks { _run_save_callbacks { _save! } }
+      else
+        _run_save_callbacks { _save! }
+      end
+    end
     
     def destroy
       _run_destroy_callbacks do
@@ -70,6 +80,11 @@ module LooseChange
       return false unless valid?
       new_record? ? post_record : put_record
       put_attachments if self.class.attachments
+      self
+    end
+    
+    def _save!
+      raise RecordInvalid, self.errors.map {|k, v| "#{k.capitalize} #{v}"}.join(', ') unless _save
       self
     end
     
@@ -113,4 +128,8 @@ module LooseChange
 
   class DatabaseNotSet < Exception
   end
+  
+  class RecordInvalid < Exception
+  end
+  
 end
