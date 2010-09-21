@@ -1,23 +1,35 @@
 module LooseChange
   
   module Attachments
-    def attachment(name)
-      attr_accessor name.to_sym, "_#{name}_content_type".to_sym
-      self.attachments = ((self.attachments || []) << name.to_sym)
-      define_method(name.to_sym) do
-        instance_variable_get("@#{name}") || retrieve_attachment(name)
-      end
-    end
   end
 
   module AttachmentClassMethods
+    
     def attach(name, file, args = {})
-      self.send("#{name}=".to_sym, file)
-      self.send("_#{name}_content_type=".to_sym, args[:content_type])
+      attachment = args.merge :file => file, :dirty => true
+      @attachments = (@attachments || {}).merge(name => attachment)
+    end
+
+    def attachment(name)
+      return attachments[name][:file] if @attachments.try(:[], :name)
+      begin
+        result = retrieve_attachment(name)
+        @attachments = (@attachments || {}).merge(name => {:file => result[:file], :dirty => false, :content_type => result[:content_type]})
+        result[:file]
+      rescue RestClient::ResourceNotFound
+        nil
+      end
     end
     
     def retrieve_attachment(name)
-      RestClient.get("#{ uri }/#{ name }")
+      { :file => RestClient.get("#{ uri }/#{ name }"),
+        :content_type => JSON.parse(RestClient.get(uri))['_attachments']['name'] }
+    end
+
+    def put_attachment(name)
+      return unless attachments[name]
+      result = JSON.parse(RestClient.put("#{ uri }/#{ name }#{ '?rev=' + @_rev if @_rev  }", attachments[name][:file], {:content_type => attachments[name][:content_type], :accept => 'text/json'}))
+      @_rev = result['rev']
     end
     
   end

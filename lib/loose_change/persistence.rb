@@ -79,7 +79,7 @@ module LooseChange
       apply_defaults
       return false unless valid?
       new_record? ? post_record : put_record
-      put_attachments if self.class.attachments
+      put_attachments
       self
     end
     
@@ -105,12 +105,7 @@ module LooseChange
     end
 
     def put_attachments
-      self.class.attachments.each do |attachment_name|
-        if attachment = attachment_ivar(attachment_name)
-          result = JSON.parse(RestClient.put("#{ uri }/#{ attachment_name }?rev=#{ @_rev }", attachment, {:content_type => attachment_content_type(attachment_name), :accept => 'text/json'}))
-          @_rev = result['rev'] if result['ok']
-        end
-      end
+      (@attachments || {}).each { |name, attachment| put_attachment(name) if attachment[:dirty] }
     end
     
     def attachment_ivar(name)

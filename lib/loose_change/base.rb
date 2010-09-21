@@ -34,7 +34,8 @@ module LooseChange
     include Helpers
     extend Helpers
     
-    class_inheritable_accessor :database, :properties, :defaults, :attachments
+    class_inheritable_accessor :database, :properties, :defaults
+    attr_accessor :attachments
     
     def to_key
       persisted? ? [id] : nil

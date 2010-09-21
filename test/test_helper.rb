@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'shoulda'
 require 'active_model'
-require 'loose_change'
+require './lib/loose_change'
 require 'timecop'
 
 # Thanks to Larry Marburger
