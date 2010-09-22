@@ -11,7 +11,7 @@ module LooseChange
     end
 
     def attachment(name)
-      return attachments[name][:file] if @attachments.try(:[], :name)
+      return attachments[name][:file] if @attachments.try(:[], :name).try(:[], :file)
       begin
         result = retrieve_attachment(name)
         @attachments = (@attachments || {}).merge(name => {:file => result[:file], :dirty => false, :content_type => result[:content_type]})

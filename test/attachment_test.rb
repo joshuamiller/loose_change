@@ -14,6 +14,7 @@ class AttachmentTest < ActiveSupport::TestCase
     @model.attach :photo, File.open(File.join(File.dirname(__FILE__), 'resources', 'couchdb.png')), :content_type => 'image/png'
     assert @model.save
     @retrieved = AttachmentModel.find(@model.id)
+    assert_equal({:photo => {}}, @retrieved.attachments)
     assert_not_nil @retrieved.attachment(:photo)
     assert_equal @retrieved.attachment(:photo).size, @model.attachment(:photo).size
   end

@@ -32,6 +32,10 @@ module LooseChange
       model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
       model.id = hash['_id']
       model.new_record = false
+      if hash['_attachments']
+        attachment_names = hash['_attachments'].map {|name, _| name}
+        model.attachments = attachment_names.inject({}) {|acc, name| acc[name.to_sym] = {}; acc}
+      end
       model
     end
     
