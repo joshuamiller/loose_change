@@ -50,6 +50,7 @@ module LooseChange
     end
         
     def ==(other_model)
+      return false unless other_model && other_model.is_a?(self.class)
       id == other_model.id &&
         _rev == other_model._rev &&
         !(changed? || other_model.changed?)
