@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{loose_change}
-  s.version = "0.1.13"
+  s.version = "0.1.14"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Miller"]
-  s.date = %q{2010-09-22}
+  s.date = %q{2010-09-24}
   s.email = %q{josh@joshinharrisburg.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
      "lib/loose_change/views.rb",
      "loose_change.gemspec",
      "test/attachment_test.rb",
+     "test/attributes_test.rb",
      "test/base_test.rb",
      "test/callback_test.rb",
      "test/inheritance_test.rb",
@@ -56,6 +57,7 @@ Gem::Specification.new do |s|
   s.summary = %q{ActiveModel-compliant CouchDB ORM}
   s.test_files = [
     "test/attachment_test.rb",
+     "test/attributes_test.rb",
      "test/base_test.rb",
      "test/callback_test.rb",
      "test/inheritance_test.rb",
