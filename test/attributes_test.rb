@@ -23,5 +23,15 @@ class AttributesTest < ActiveSupport::TestCase
   should 'return false when attempting to update invalid attributes' do
     assert_equal false, @model.update_attributes(:age => "John")
   end
-  
+
+  should 'allow update of one attribute' do
+    @model.update_attribute(:age, 10)
+    assert_equal 10, @model.age
+    assert_not_nil @model.id
+  end
+
+  should 'return false when attemping to update invalid attribute' do
+    assert_equal false, @model.update_attribute(:age, "Joe")
+  end
+    
 end

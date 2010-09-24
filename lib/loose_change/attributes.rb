@@ -27,7 +27,12 @@ module LooseChange
     def attributes
       (self.class.properties || []).inject({}) {|acc, key| acc[key] = send(key); acc}
     end
-    
+
+    def update_attribute(name, value)
+      send("#{name}=", value)
+      save
+    end
+        
     def update_attributes(args = {})
       args.each do |name, value|
         send("#{name}=", value)
