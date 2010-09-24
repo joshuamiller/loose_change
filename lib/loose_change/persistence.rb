@@ -105,7 +105,9 @@ module LooseChange
     end
 
     def put_record
-      JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
+      result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))['ok']
+      @_rev = result['rev']
+      result
     end
 
     def put_attachments
