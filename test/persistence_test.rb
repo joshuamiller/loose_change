@@ -26,6 +26,11 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_not_nil @model.id
   end
 
+  should 'update its _rev on multiple saves' do
+    @model.save
+    assert_not_equal @model._rev, @model.save._rev
+  end
+    
   should "take save with a !" do
     model = TestModel.new(:age => 2)
     model.save!
