@@ -32,6 +32,7 @@ module LooseChange
       args.each do |name, value|
         send("#{name}=", value)
       end
+      save
     end
     
     private
