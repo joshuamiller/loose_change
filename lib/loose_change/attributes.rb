@@ -28,6 +28,12 @@ module LooseChange
       (self.class.properties || []).inject({}) {|acc, key| acc[key] = send(key); acc}
     end
     
+    def update_attributes(args = {})
+      args.each do |name, value|
+        send("#{name}=", value)
+      end
+    end
+    
     private
     
     def touch_created_at
