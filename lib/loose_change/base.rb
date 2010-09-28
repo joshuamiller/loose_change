@@ -30,7 +30,7 @@ module LooseChange
     extend Persistence 
     include PersistenceClassMethods
     extend Views
-    
+    extend Pagination
     include Helpers
     extend Helpers
     

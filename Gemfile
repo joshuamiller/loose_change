@@ -4,6 +4,7 @@ gem 'activesupport', '~> 3.0.0'
 gem 'activemodel', '~> 3.0.0'
 gem 'rest-client'
 gem 'json'
+gem 'will_paginate'
 
 group :development do
   gem 'jeweler'

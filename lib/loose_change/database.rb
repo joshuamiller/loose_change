@@ -31,12 +31,7 @@ module LooseChange
       rescue
         RestClient.put("#{ database.uri }/_design/#{ CGI.escape(model_name) }",
                        { '_id' => "_design/#{ CGI.escape(model_name) }",
-                         'language' => 'javascript',
-                         'views' => { 'all' => { 'map' => "function(doc) {
-                                                            if (doc['model_name'] == '#{ model_name }') {
-                                                                emit(null, doc);
-                                                            }
-                                                          }" } } }.to_json, default_headers)
+                         'language' => 'javascript'}.to_json, default_headers)
       end
     end
     

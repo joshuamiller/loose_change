@@ -3,6 +3,7 @@ require 'active_support/core_ext'
 require 'active_model'
 require 'rest-client'
 require 'json'
+require 'will_paginate'
 
 module LooseChange
   extend ActiveSupport::Autoload
@@ -21,5 +22,6 @@ module LooseChange
   autoload :Database, File.dirname(__FILE__) + '/loose_change/database'
   autoload :Server, File.dirname(__FILE__) + '/loose_change/server'
   autoload :Views, File.dirname(__FILE__) + '/loose_change/views'
+  autoload :Pagination, File.dirname(__FILE__) + '/loose_change/pagination'
   autoload :Helpers, File.dirname(__FILE__) + '/loose_change/helpers'
 end

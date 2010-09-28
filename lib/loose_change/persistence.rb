@@ -6,6 +6,8 @@ module LooseChange
     def use_database(db, server = "http://127.0.0.1:5984")
       self.database = Database.new(db, Server.new(server))
       Database.setup_design(self.database, self.model_name)
+      view_by_all
+      paginated_view_by_all
     end
     
     def find(id)

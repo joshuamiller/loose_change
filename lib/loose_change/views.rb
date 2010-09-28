@@ -4,10 +4,10 @@ module LooseChange
   module Views
     
     def view(view_name, opts = {})
-      include_docs = opts.include?(:include_docs) ? opts[:include_docs] : true
-      group = opts.include?(:group) ? opts[:group] : false
-      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?key=#{CGI.escape(opts[:key].to_json)}&include_docs=#{include_docs}", default_headers))['rows'].map do |row|
-        include_docs ? instantiate_from_hash(row['doc']) : row['value']
+      opts[:key] = opts[:key] ? CGI.escape(opts[:key].to_json) : nil
+      param_string = opts.reject {|k,v| v.nil?}.map {|k,v| "#{k}=#{v}"}.join('&')
+      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?#{ param_string }", default_headers))['rows'].map do |row|
+        opts[:include_docs] ? instantiate_from_hash(row['doc']) : row['value']
       end
     end
     
@@ -15,7 +15,7 @@ module LooseChange
       view_name = "by_#{ keys.join('_and_') }"
       view_code = "function(doc) {
                      if ((doc['model_name'] == '#{ model_name }') && #{ keys.map {|k| existence_check k}.join('&&') }) {
-                       emit(#{ key_for(keys) }, doc)
+                       emit(#{ key_for(keys) }, null)
                      }
                    }
                    "
@@ -26,13 +26,13 @@ module LooseChange
       end
     end
 
-    def all
-      JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ self.model_name }/_view/all", default_headers))['rows'].map { |row| instantiate_from_hash(row['value']) }
+    def all(opts = {})
+      view(:all, opts.merge!(:include_docs => true))
     end
     
     def add_view(name, map, reduce = nil)
       design_doc = JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }"))
-      current_views = design_doc['views']
+      current_views = design_doc['views'] || {}
       JSON.parse(RestClient.put("#{ self.database.uri }/_design/#{ self.model_name }",
                                 { '_id' => design_doc['_id'],
                                   '_rev' => design_doc['_rev'],
@@ -40,6 +40,17 @@ module LooseChange
                                   'views' => current_views.merge({name => {'map' => map, 'reduce' => reduce}})}.to_json, default_headers))
     end
 
+    def view_by_all
+      view_name = "all"
+      view_code = "function(doc) {
+                     if (doc['model_name'] == '#{ model_name }') {
+                       emit(null);
+                     }
+                   }
+                   "
+      add_view(view_name, view_code)
+    end
+    
     def existence_check(key)
       "(#{ doc_key(key) } != null)"
     end
