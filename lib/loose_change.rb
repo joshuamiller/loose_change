@@ -4,6 +4,7 @@ require 'active_model'
 require 'rest-client'
 require 'json'
 require 'will_paginate'
+require 'will_paginate/collection'
 
 module LooseChange
   extend ActiveSupport::Autoload
