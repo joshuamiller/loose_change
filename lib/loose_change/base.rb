@@ -10,7 +10,6 @@ module LooseChange
     # Can't escape the following when trying to
     # use a Callbacks module:
     # undefined method `extlib_inheritable_reader' for LooseChange::Callbacks:Module
-    #
     # so we'll throw it in here
     # include Callbacks
     extend ActiveModel::Callbacks

@@ -6,7 +6,11 @@ module LooseChange
     extend Helpers
     
     attr_reader :server, :name
-
+    
+    # Build a new LooseChange::Database instance with a database named
+    # +name+.  The +server+ is a URI string identifying the CouchDB
+    # server and port.  If the database does not exist on the server,
+    # it will be created.
     def initialize(name, server)
       @name = name
       @server = server
@@ -17,7 +21,8 @@ module LooseChange
     def uri
       server.uri + @uri
     end
-    
+
+    # Delete the database named +name+ on the server +server+.
     def self.delete(name, server = "http://127.0.0.1:5984")
       begin
         RestClient.delete("#{ server }/#{ name }")

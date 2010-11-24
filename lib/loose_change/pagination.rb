@@ -1,7 +1,9 @@
 module LooseChange
 
   module Pagination
-    
+
+    # Similar to <tt>#view_by</tt>, but adds a paginated view
+    # compatible with <tt>will_paginate</tt>.
     def paginated_view_by(*keys)
       view_name = "paginated_by_#{ keys.join('_and_') }"
       map_code = "function(doc) {
@@ -14,7 +16,11 @@ module LooseChange
       add_view(view_name, map_code, reduce_code)
       view_by(*keys)
     end
-    
+
+    # Returns a <tt>will_paginate</tt>-compatible set of documents.
+    # In +opts+, <tt>:per_page</tt> is required, and <tt>:page</tt>
+    # will be set to 1 unless otherwise specified.  All other +opts+
+    # will be passed to CouchDB as in <tt>:view_by</tt>.
     def paginated_by(view_name, opts = {})
       raise "You must include a per_page parameter" if opts[:per_page].nil?
 
@@ -32,7 +38,9 @@ module LooseChange
         pager.replace( results )
       end
     end
-    
+
+    # Short for <tt>paginated_by(:all)</tt>; see
+    # <tt>#paginated_by</tt> for +opts+.
     def paginate(opts = {})
       paginated_by(:all, opts)
     end
