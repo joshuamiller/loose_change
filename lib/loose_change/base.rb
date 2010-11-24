@@ -11,7 +11,6 @@ module LooseChange
     # use a Callbacks module:
     # undefined method `extlib_inheritable_reader' for LooseChange::Callbacks:Module
     # so we'll throw it in here
-    # include Callbacks
     extend ActiveModel::Callbacks
     define_model_callbacks :create, :save, :destroy
     
@@ -19,13 +18,9 @@ module LooseChange
     include AttributeClassMethods
     extend Attachments
     include AttachmentClassMethods
-    extend Dirty
-    extend Validations
     extend Naming
     include NamingClassMethods
     include Errors
-    extend Observer
-    extend I18n
     extend Persistence 
     include PersistenceClassMethods
     extend Views
