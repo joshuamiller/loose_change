@@ -30,6 +30,7 @@ class AttachmentTest < ActiveSupport::TestCase
     assert_equal({:photo => {:content_type => 'image/png'}}, @retrieved.attachments)
     assert_not_nil @retrieved.attachment(:photo)
     assert_equal @retrieved.attachment(:photo).size, @model.attachment(:photo).size
+    assert @retrieved.save
   end
   
 end
