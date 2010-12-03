@@ -24,6 +24,7 @@ begin
     gemspec.add_dependency 'rest-client', '~> 1.6.0'
     gemspec.add_dependency 'json', '~> 1.4.6'
   end
+  Jeweler::GemcutterTasks.new  
 rescue LoadError
   puts "Jeweler not available."
 end
