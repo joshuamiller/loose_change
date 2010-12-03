@@ -54,7 +54,7 @@ module LooseChange
       result = JSON.parse(RestClient.put("#{ uri }/#{ name }#{ '?rev=' + @_rev if @_rev  }", attachments[name][:file], {:content_type => attachments[name][:content_type], :accept => 'text/json'}))
       @_rev = result['rev']
     end
-    
+       
   end
   
 end

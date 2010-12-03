@@ -42,9 +42,8 @@ module LooseChange
     # Build a Loose Change record from a hash of attributes +hash+ as
     # returned by CouchDB.
     def instantiate_from_hash(hash)
-      model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
+      model = new(hash.reject {|k, _| 'model_name' == k})
       model.id = hash['_id']
-      model._attachments = hash['_attachments']
       model.new_record = false
       if hash['_attachments']
         attachment_names = hash['_attachments'].map {|name, _| name}
@@ -124,7 +123,11 @@ module LooseChange
     end
 
     def put_record
-      result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id, :_attachments], :except => [:id]), default_headers))
+      if self._attachments
+        result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id, :_attachments], :except => [:id]), default_headers))
+      else
+        result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))
+      end
       @_rev = result['rev']
       result
     end

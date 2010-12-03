@@ -122,5 +122,14 @@ class PersistenceTest < ActiveSupport::TestCase
     assert_times_close time, new_model.created_at
     Timecop.return
   end
+
+  should "handle multiple saves and changes" do
+    @model.save
+    @model = TestModel.find(@model.id)
+    @model.age = "S,M,L,XL,2X".split ','
+    @model.name = 10
+    @model.save
+  end
+  
   
 end
