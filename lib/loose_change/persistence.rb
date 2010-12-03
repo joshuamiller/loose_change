@@ -44,6 +44,7 @@ module LooseChange
     def instantiate_from_hash(hash)
       model = new(hash.reject {|k, _| 'model_name' == k || '_attachments' == k})
       model.id = hash['_id']
+      model._attachments = hash['_attachments']
       model.new_record = false
       if hash['_attachments']
         attachment_names = hash['_attachments'].map {|name, _| name}
@@ -56,7 +57,7 @@ module LooseChange
   
   module PersistenceClassMethods
 
-    attr_accessor :new_record, :destroyed, :database, :id, :_rev, :_id
+    attr_accessor :new_record, :destroyed, :database, :id, :_rev, :_id, :_attachments
     
     def new_record?()   @new_record end
     def destroyed?()    @destroyed  end
@@ -123,7 +124,7 @@ module LooseChange
     end
 
     def put_record
-      result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id], :except => [:id]), default_headers))
+      result = JSON.parse(RestClient.put(uri, self.to_json(:methods => [:model_name, :_rev, :_id, :_attachments], :except => [:id]), default_headers))
       @_rev = result['rev']
       result
     end
