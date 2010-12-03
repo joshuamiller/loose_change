@@ -47,7 +47,7 @@ module LooseChange
       model.new_record = false
       if hash['_attachments']
         attachment_names = hash['_attachments'].map {|name, _| name}
-        model.attachments = attachment_names.inject({}) {|acc, name| acc[name.to_sym] = {:content_type => hash['_attachments'][name]['content_type']}; acc}
+        model.attachments = attachment_names.inject({}) {|acc, name| acc[name] = {:content_type => hash['_attachments'][name]['content_type']}; acc}
       end
       model
     end

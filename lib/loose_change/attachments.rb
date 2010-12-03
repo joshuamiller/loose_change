@@ -26,6 +26,7 @@ module LooseChange
     # instance, whether or not that file has been saved back to
     # CouchDB.  Will return nil if no attachment by that name exists.
     def attachment(name)
+      name = name.to_s
       return attachments[name][:file] if @attachments.try(:[], :name).try(:[], :file)
       begin
         result = retrieve_attachment(name)
