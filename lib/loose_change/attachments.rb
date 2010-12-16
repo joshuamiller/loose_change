@@ -40,7 +40,7 @@ module LooseChange
     # Returns a hash composed of <tt>file</tt> and <tt>content_type</tt> as
     # returned from CouchDB identified by +name+.
     def retrieve_attachment(name)
-      { :file => RestClient.get("#{ uri }/#{ name }"),
+      { :file => RestClient.get("#{ uri }/#{ CGI.escape(name) }"),
         :content_type => JSON.parse(RestClient.get(uri))['_attachments']['name'] }
     end
     
@@ -52,7 +52,7 @@ module LooseChange
     #   recipe.put_attachment(:photo)
     def put_attachment(name)
       return unless attachments[name]
-      result = JSON.parse(RestClient.put("#{ uri }/#{ name }#{ '?rev=' + @_rev if @_rev  }", attachments[name][:file], {:content_type => attachments[name][:content_type], :accept => 'text/json'}))
+      result = JSON.parse(RestClient.put("#{ uri }/#{ CGI.escape(name) }#{ '?rev=' + @_rev if @_rev  }", attachments[name][:file], {:content_type => attachments[name][:content_type], :accept => 'text/json'}))
       @_rev = result['rev']
     end
        

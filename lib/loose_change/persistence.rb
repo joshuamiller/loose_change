@@ -100,8 +100,11 @@ module LooseChange
       raise DatabaseNotSet.new("Cannot save without database set.") unless @database
       apply_defaults
       return false unless valid?
-      new_record? ? post_record : put_record
-      put_attachments
+      if new_record
+        post_record and put_attachments
+      else
+        put_record and put_attachments
+      end
       self
     end
     
@@ -133,7 +136,9 @@ module LooseChange
     end
 
     def put_attachments
-      (@attachments || {}).each { |name, attachment| put_attachment(name) if attachment[:dirty] }
+      (@attachments || {}).each { |name, attachment|
+        put_attachment(name) if attachment[:dirty]
+      }
     end
     
     def attachment_ivar(name)
