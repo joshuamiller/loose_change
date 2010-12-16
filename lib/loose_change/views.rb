@@ -8,7 +8,7 @@ module LooseChange
     # +opts+ hash will be passed along to CouchDB; for options see
     # http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views
     def view(view_name, opts = {})
-      opts[:key] = opts[:key] ? CGI.escape(opts[:key].to_json) : nil
+      opts[:key] = opts.has_key?(:key) ? CGI.escape(opts[:key].to_json) : nil
       param_string = opts.reject {|k,v| v.nil?}.map {|k,v| "#{k}=#{v}"}.join('&')
       JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }/_view/#{ view_name }?#{ param_string }", default_headers))['rows'].map do |row|
         opts[:include_docs] ? instantiate_from_hash(row['doc']) : row['value']
