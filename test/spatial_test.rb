@@ -23,7 +23,7 @@ class SpatialTest < ActiveSupport::TestCase
     end
     
     should "be findable in a bounding box" do
-      assert_equal [@model], PointModel.by_bounding_box(0,0,41,80)
+      assert_equal [@model], PointModel.by_bounding_box(:loc, 0, 0, 41, 80)
     end
 
   end
@@ -44,8 +44,8 @@ class SpatialTest < ActiveSupport::TestCase
     end
     
     should "be findable in a bounding box" do
-      assert_equal [@model], MPModel.by_bounding_box(0,0,43,80)
-      assert_equal [], MPModel.by_bounding_box(0,0,40,80)
+      assert_equal [@model], MPModel.by_bounding_box(:loc, 0, 0, 43, 80)
+      assert_equal [], MPModel.by_bounding_box(:loc, 0, 0, 40, 80)
     end
   
   end
