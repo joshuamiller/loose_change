@@ -4,17 +4,17 @@ class SpatialTest < ActiveSupport::TestCase
 
   setup do
     LooseChange::Database.delete("test_db")
-
-    class SpatialModel < LooseChange::Base
-      use_database "test_db"
-      geo_point :loc
-    end
   end
   
   context "a basic spatial model with a point" do
     
     setup do
-      @model = SpatialModel.new(:loc => [40.813874, 77.858219])
+      class PointModel < LooseChange::Base
+        use_database "test_db"
+        geo_point :loc
+      end
+      
+      @model = PointModel.new(:loc => [40.813874, 77.858219])
       @model.save
     end
     
@@ -23,10 +23,32 @@ class SpatialTest < ActiveSupport::TestCase
     end
     
     should "be findable in a bounding box" do
-      assert_equal [@model], SpatialModel.by_bounding_box(0,0,41,80)
+      assert_equal [@model], PointModel.by_bounding_box(0,0,41,80)
     end
 
   end
+  
+  context "a spatial model with a multipoint" do
+    setup do
+      class MPModel < LooseChange::Base
+        use_database "test_db"
+        geo_multipoint :loc
+      end
+      
+      @model = MPModel.new(:loc => [[40.813874, 77.858219], [42.134, 79.23434]])
+      @model.save
+    end
 
+    should "return its multipoint data" do
+      assert_equal [[40.813874, 77.858219], [42.134, 79.23434]], @model.loc
+    end
+    
+    should "be findable in a bounding box" do
+      assert_equal [@model], MPModel.by_bounding_box(0,0,43,80)
+      assert_equal [], MPModel.by_bounding_box(0,0,40,80)
+    end
+  
+  end
+  
 end
 
