@@ -25,6 +25,7 @@ module LooseChange
     include PersistenceClassMethods
     extend Views
     extend Pagination
+    extend Spatial
     include Helpers
     extend Helpers
     

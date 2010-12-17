@@ -57,7 +57,7 @@ module LooseChange
     def add_view(name, map, reduce = nil)
       design_doc = JSON.parse(RestClient.get("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }"))
       current_views = design_doc['views'] || {}
-      JSON.parse(RestClient.put("#{ self.database.uri }/_design/#{ self.model_name }",
+      JSON.parse(RestClient.put("#{ self.database.uri }/_design/#{ CGI.escape(self.model_name) }",
                                 { '_id' => design_doc['_id'],
                                   '_rev' => design_doc['_rev'],
                                   'language' => 'javascript',
