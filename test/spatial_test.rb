@@ -2,10 +2,6 @@ require './test/test_helper'
 
 class SpatialTest < ActiveSupport::TestCase
 
-  setup do
-    LooseChange::Database.delete("test_db")
-  end
-  
   context "a basic spatial model with a point" do
     
     setup do
@@ -13,6 +9,8 @@ class SpatialTest < ActiveSupport::TestCase
         use_database "test_db"
         geo_point :loc
       end
+
+      PointModel.all.each(&:destroy)
       
       @model = PointModel.new(:loc => [40.813874, 77.858219])
       @model.save
@@ -29,11 +27,14 @@ class SpatialTest < ActiveSupport::TestCase
   end
   
   context "a spatial model with a multipoint" do
+    
     setup do
       class MPModel < LooseChange::Base
         use_database "test_db"
         geo_multipoint :loc
       end
+
+      MPModel.all.each(&:destroy)
       
       @model = MPModel.new(:loc => [[40.813874, 77.858219], [42.134, 79.23434]])
       @model.save
