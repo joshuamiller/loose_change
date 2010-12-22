@@ -1,6 +1,6 @@
 # Loose Change is a Ruby ORM for CouchDB
 
-* where 'ORM' is as accurate as ['Holy Roman
+* where 'Object-Relational Mapper' is as accurate as ['Holy Roman
 Empire'](http://en.wikipedia.org/wiki/Holy_Roman_Empire#Analysis)
 
 ## Goals and Principles
@@ -10,11 +10,20 @@ Empire'](http://en.wikipedia.org/wiki/Holy_Roman_Empire#Analysis)
 * Make common tasks easy; get out of your way if you need the metal
 * Make working with [GeoCouch](http://github.com/vmx/couchdb) seamless
 
+## GeoCouch Support
+
+Documents with spatial properties are now supported if you are running
+the latest version of [GeoCouch from
+git](http://github.com/vmx/couchdb).  Only Point and MultiPoint
+geometries are currently supported and tested.
+
 ## Warnings
 
-* This is pretty alpha at this point.
 * Only tested on Ruby 1.9.2.  I'm not intentionally breaking 1.8.x, but neither do I guarantee anything.
-* The stuff about GeoCouch above was a goal I didn't get to yet.
+
+## Todo
+
+* Add Rake tasks to push complicated views from a JS directory
 
 ## Help
 
