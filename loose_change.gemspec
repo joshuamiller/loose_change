@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{loose_change}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Miller"]
-  s.date = %q{2010-12-22}
+  s.date = %q{2010-12-30}
   s.email = %q{josh@joshinharrisburg.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -72,21 +72,24 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0.0"])
-      s.add_runtime_dependency(%q<activemodel>, ["~> 3.0.0"])
-      s.add_runtime_dependency(%q<rest-client>, ["~> 1.6.0"])
-      s.add_runtime_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_runtime_dependency(%q<activemodel>, ["~> 3.0"])
+      s.add_runtime_dependency(%q<rest-client>, ["~> 1.6"])
+      s.add_runtime_dependency(%q<json>, ["~> 1.4"])
+      s.add_runtime_dependency(%q<will_paginate>, ["~> 2.3"])
     else
-      s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
-      s.add_dependency(%q<activemodel>, ["~> 3.0.0"])
-      s.add_dependency(%q<rest-client>, ["~> 1.6.0"])
-      s.add_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_dependency(%q<activemodel>, ["~> 3.0"])
+      s.add_dependency(%q<rest-client>, ["~> 1.6"])
+      s.add_dependency(%q<json>, ["~> 1.4"])
+      s.add_dependency(%q<will_paginate>, ["~> 2.3"])
     end
   else
-    s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
-    s.add_dependency(%q<activemodel>, ["~> 3.0.0"])
-    s.add_dependency(%q<rest-client>, ["~> 1.6.0"])
-    s.add_dependency(%q<json>, ["~> 1.4.6"])
+    s.add_dependency(%q<activesupport>, ["~> 3.0"])
+    s.add_dependency(%q<activemodel>, ["~> 3.0"])
+    s.add_dependency(%q<rest-client>, ["~> 1.6"])
+    s.add_dependency(%q<json>, ["~> 1.4"])
+    s.add_dependency(%q<will_paginate>, ["~> 2.3"])
   end
 end
 
