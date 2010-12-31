@@ -22,3 +22,6 @@ module LooseChange
   autoload :Helpers, File.dirname(__FILE__) + '/loose_change/helpers'
   autoload :Spatial, File.dirname(__FILE__) + '/loose_change/spatial'
 end
+
+
+require (File.dirname(__FILE__) + '/loose_change/railtie') if defined?(Rails::Railtie)
