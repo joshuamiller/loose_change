@@ -19,10 +19,11 @@ begin
     gemspec.homepage = "http://github.com/joshuamiller/loose_change"
     gemspec.authors = ["Joshua Miller"]
     # Dependencies
-    gemspec.add_dependency 'activesupport', '~> 3.0.0'
-    gemspec.add_dependency 'activemodel', '~> 3.0.0'
-    gemspec.add_dependency 'rest-client', '~> 1.6.0'
-    gemspec.add_dependency 'json', '~> 1.4.6'
+    gemspec.add_dependency 'activesupport', '~> 3.0'
+    gemspec.add_dependency 'activemodel', '~> 3.0'
+    gemspec.add_dependency 'rest-client', '~> 1.6'
+    gemspec.add_dependency 'json', '~> 1.4'
+    gemspec.add_dependency 'will_paginate', '~> 2.3'
   end
   Jeweler::GemcutterTasks.new  
 rescue LoadError
