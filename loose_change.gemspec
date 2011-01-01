@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{loose_change}
-  s.version = "0.4.2"
+  s.version = "1.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joshua Miller"]
-  s.date = %q{2010-12-31}
+  s.date = %q{2011-01-01}
   s.email = %q{josh@joshinharrisburg.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
      "lib/loose_change/railtie.rb",
      "lib/loose_change/server.rb",
      "lib/loose_change/spatial.rb",
+     "lib/loose_change/validations.rb",
      "lib/loose_change/views.rb",
      "lib/tasks/loose_change.rb",
      "loose_change.gemspec",
@@ -49,6 +50,7 @@ Gem::Specification.new do |s|
      "test/resources/couchdb.png",
      "test/spatial_test.rb",
      "test/test_helper.rb",
+     "test/validations_test.rb",
      "test/view_test.rb"
   ]
   s.homepage = %q{http://github.com/joshuamiller/loose_change}
@@ -66,6 +68,7 @@ Gem::Specification.new do |s|
      "test/persistence_test.rb",
      "test/spatial_test.rb",
      "test/test_helper.rb",
+     "test/validations_test.rb",
      "test/view_test.rb"
   ]
 
