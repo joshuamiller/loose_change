@@ -21,6 +21,7 @@ module LooseChange
   autoload :Pagination, File.dirname(__FILE__) + '/loose_change/pagination'
   autoload :Helpers, File.dirname(__FILE__) + '/loose_change/helpers'
   autoload :Spatial, File.dirname(__FILE__) + '/loose_change/spatial'
+  autoload :Validations, File.dirname(__FILE__) + '/loose_change/validations'
 end
 
 
